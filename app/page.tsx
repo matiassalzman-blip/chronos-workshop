@@ -1,174 +1,224 @@
-import { Link } from "@/components/shared";
+"use client";
 
-const HomePage = () => {
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { PencilIcon, PlusIcon, TrashIcon } from "lucide-react";
+
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle
+} from "@/components/ui/alert-dialog";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle
+} from "@/components/ui/dialog";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
+} from "@/components/ui/table";
+import { EntryForm } from "@/components/chronos/EntryForm";
+import { useChronosSession } from "@/hooks/useChronosSession";
+import { EntryInput, useEntries } from "@/hooks/useEntries";
+import { getWeekRange, isWithinRange } from "@/lib/chronos/date";
+import { clients, projects } from "@/lib/chronos/fixtures";
+import { Entry } from "@/lib/chronos/types";
+
+function projectLabel(projectId: string): string {
+  const project = projects.find((p) => p.id === projectId);
+  if (!project) return "Unknown project";
+  if (project.clientId === null) return project.name;
+  return `${clients.find((client) => client.id === project.clientId)?.name} — ${project.name}`;
+}
+
+export default function EntriesPage() {
+  const router = useRouter();
+  const { currentUser } = useChronosSession();
+  const { entries, addEntry, updateEntry, deleteEntry } = useEntries(
+    currentUser?.id ?? null
+  );
+
+  const [formOpen, setFormOpen] = useState(false);
+  const [editingEntry, setEditingEntry] = useState<Entry | undefined>(
+    undefined
+  );
+  const [deletingEntry, setDeletingEntry] = useState<Entry | null>(null);
+
+  useEffect(() => {
+    if (!currentUser) router.replace("/login");
+  }, [currentUser, router]);
+
+  if (!currentUser) return null;
+
+  const weekRange = getWeekRange(new Date());
+  const weekTotal = entries
+    .filter((entry) => isWithinRange(entry.date, weekRange))
+    .reduce((sum, entry) => sum + entry.hours, 0);
+
+  const openAddForm = () => {
+    setEditingEntry(undefined);
+    setFormOpen(true);
+  };
+
+  const openEditForm = (entry: Entry) => {
+    setEditingEntry(entry);
+    setFormOpen(true);
+  };
+
+  const handleSubmit = (input: EntryInput) => {
+    if (editingEntry) {
+      updateEntry(editingEntry.id, input);
+    } else {
+      addEntry(input);
+    }
+    setFormOpen(false);
+  };
+
+  const handleDeleteConfirm = () => {
+    if (deletingEntry) deleteEntry(deletingEntry.id);
+    setDeletingEntry(null);
+  };
+
   return (
-    <div className="loop-main-content">
-      {/* Breadcrumb */}
-      <nav className="loop-breadcrumb dark:text-gray-400">
-        <Link
-          href="/"
-          className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
-        >
-          Home
-        </Link>
-        <span className="mx-2">/</span>
-        <span className="text-gray-500 dark:text-gray-400">Dashboard</span>
-      </nav>
-
-      {/* Page Header */}
-      <div className="mb-8">
-        <h1 className="mb-2 text-3xl font-bold text-gray-900 dark:text-white">
-          Welcome
-        </h1>
-        <p className="text-gray-600 dark:text-gray-400">
-          Feel free to remove all the content in this page (app/page.tsx) to
-          start working on your prototype.
-        </p>
+    <div className="mx-auto flex max-w-4xl flex-col gap-6 p-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1>My Entries</h1>
+          <p className="text-sm text-muted-foreground">
+            This week:{" "}
+            <span className="font-medium text-foreground">{weekTotal}</span>{" "}
+            hours logged
+          </p>
+        </div>
+        <Button onClick={openAddForm}>
+          <PlusIcon />
+          Add entry
+        </Button>
       </div>
 
-      {/* Main Content Grid */}
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-        {/* Welcome Card */}
-        <div className="loop-card">
-          <div className="loop-card-content">
-            <h2 className="mb-4 text-xl font-semibold text-gray-900 dark:text-white">
-              Welcome to Dualboot Prototype Starter
-            </h2>
-            <p className="mb-6 text-gray-600 dark:text-gray-400">
-              This is a Next.js application styled with Tailwind CSS and
-              shadcn/ui, set up for fast, high-fidelity UI prototyping.
-            </p>
-            <div className="flex space-x-4">
-              <button className="loop-button-primary">Get Started</button>
-              <button className="loop-button-secondary">Learn More</button>
-            </div>
-          </div>
+      {entries.length === 0 ? (
+        <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-border py-16 text-center">
+          <p className="text-sm text-muted-foreground">
+            No entries yet — log your first hours to get started.
+          </p>
+          <Button onClick={openAddForm}>
+            <PlusIcon />
+            Add entry
+          </Button>
         </div>
+      ) : (
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Date</TableHead>
+              <TableHead>Project</TableHead>
+              <TableHead>Hours</TableHead>
+              <TableHead>Billable</TableHead>
+              <TableHead>Description</TableHead>
+              <TableHead>Tags</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {entries.map((entry) => (
+              <TableRow key={entry.id}>
+                <TableCell>{entry.date}</TableCell>
+                <TableCell>{projectLabel(entry.projectId)}</TableCell>
+                <TableCell>{entry.hours}</TableCell>
+                <TableCell>
+                  <Badge variant={entry.billable ? "default" : "secondary"}>
+                    {entry.billable ? "Billable" : "Non-billable"}
+                  </Badge>
+                </TableCell>
+                <TableCell className="max-w-64 truncate">
+                  {entry.description}
+                </TableCell>
+                <TableCell>
+                  <div className="flex flex-wrap gap-1">
+                    {entry.tags.map((tag) => (
+                      <Badge key={tag} variant="outline">
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
+                </TableCell>
+                <TableCell className="text-right">
+                  <div className="flex justify-end gap-1">
+                    <Button
+                      variant="ghost"
+                      size="icon-sm"
+                      onClick={() => openEditForm(entry)}
+                    >
+                      <PencilIcon />
+                      <span className="sr-only">Edit</span>
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon-sm"
+                      onClick={() => setDeletingEntry(entry)}
+                    >
+                      <TrashIcon />
+                      <span className="sr-only">Delete</span>
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      )}
 
-        {/* Quick Actions */}
-        <div className="loop-card">
-          <div className="loop-card-content">
-            <h3 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
-              Quick Actions
-            </h3>
-            <div className="space-y-3">
-              <Link
-                href="/projects"
-                className="block rounded-md p-3 transition-colors hover:bg-gray-50 dark:hover:bg-gray-700"
-              >
-                <div className="flex items-center">
-                  <div className="mr-3 h-2 w-2 rounded-full bg-blue-500"></div>
-                  <span className="dark:text-gray-300">View Projects</span>
-                </div>
-              </Link>
-              <Link
-                href="/team"
-                className="block rounded-md p-3 transition-colors hover:bg-gray-50 dark:hover:bg-gray-700"
-              >
-                <div className="flex items-center">
-                  <div className="mr-3 h-2 w-2 rounded-full bg-green-500"></div>
-                  <span className="dark:text-gray-300">Team Members</span>
-                </div>
-              </Link>
-              <Link
-                href="/analytics"
-                className="block rounded-md p-3 transition-colors hover:bg-gray-50 dark:hover:bg-gray-700"
-              >
-                <div className="flex items-center">
-                  <div className="mr-3 h-2 w-2 rounded-full bg-yellow-500"></div>
-                  <span className="dark:text-gray-300">View Analytics</span>
-                </div>
-              </Link>
-            </div>
-          </div>
-        </div>
+      <Dialog open={formOpen} onOpenChange={setFormOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>
+              {editingEntry ? "Edit entry" : "Add entry"}
+            </DialogTitle>
+          </DialogHeader>
+          <EntryForm
+            entry={editingEntry}
+            onSubmit={handleSubmit}
+            onCancel={() => setFormOpen(false)}
+          />
+        </DialogContent>
+      </Dialog>
 
-        {/* Resources */}
-        <div className="loop-card">
-          <div className="loop-card-content">
-            <h3 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
-              Technologies Used
-            </h3>
-            <div className="space-y-4">
-              <div className="tech-card">
-                <span className="font-medium dark:text-gray-300">
-                  Next.js 16
-                </span>
-                <span className="float-right text-sm text-gray-500 dark:text-gray-400">
-                  React Framework
-                </span>
-              </div>
-              <div className="tech-card">
-                <span className="font-medium dark:text-gray-300">
-                  TypeScript
-                </span>
-                <span className="float-right text-sm text-gray-500 dark:text-gray-400">
-                  Type Safety
-                </span>
-              </div>
-              <div className="tech-card">
-                <span className="font-medium dark:text-gray-300">
-                  Tailwind CSS
-                </span>
-                <span className="float-right text-sm text-gray-500 dark:text-gray-400">
-                  Styling
-                </span>
-              </div>
-              <div className="tech-card">
-                <span className="font-medium dark:text-gray-300">
-                  shadcn/ui
-                </span>
-                <span className="float-right text-sm text-gray-500 dark:text-gray-400">
-                  Components
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* External Links */}
-        <div className="loop-card">
-          <div className="loop-card-content">
-            <h3 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
-              External Resources
-            </h3>
-            <div className="space-y-3">
-              <a
-                href="https://github.com/dualbootpartners/latam-nextjs-seed"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block rounded-md border border-gray-200 p-3 transition-colors hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-700"
-              >
-                <div className="flex items-center justify-between">
-                  <span className="font-medium dark:text-gray-300">
-                    Check Repository
-                  </span>
-                  <span className="text-xs text-gray-500 dark:text-gray-400">
-                    GitHub
-                  </span>
-                </div>
-              </a>
-              <a
-                href="https://www.npmjs.com/package/@dualbootpartners/latam-nextjs-cli"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block rounded-md border border-gray-200 p-3 transition-colors hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-700"
-              >
-                <div className="flex items-center justify-between">
-                  <span className="font-medium dark:text-gray-300">
-                    Check CLI
-                  </span>
-                  <span className="text-xs text-gray-500 dark:text-gray-400">
-                    NPM
-                  </span>
-                </div>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
+      <AlertDialog
+        open={!!deletingEntry}
+        onOpenChange={(open) => !open && setDeletingEntry(null)}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete entry?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will permanently remove this entry. This can&apos;t be
+              undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              variant="destructive"
+              onClick={handleDeleteConfirm}
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
-};
-
-export default HomePage;
+}

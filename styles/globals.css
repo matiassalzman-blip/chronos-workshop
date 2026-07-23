@@ -88,10 +88,13 @@
   --color-foreground-secondary: #a5a5a5;
   --color-foreground-muted: #767676;
   --color-button-foreground: #d7d7d7;
-  --color-accent: #53b1fd;
+  /* "brand-" prefix avoids colliding with shadcn's own --color-accent /
+     --color-destructive slots below (@theme inline), which alias the
+     semantic --accent/--destructive tokens, not these raw brand hexes */
+  --color-brand-accent: #53b1fd;
   --color-success: #3ccb7f;
   --color-warning: #fac515;
-  --color-destructive: #f63d68;
+  --color-brand-destructive: #f63d68;
 
   /* Alpha overlays (white/black over the near-black background) */
   --color-white-4: rgba(255, 255, 255, 0.04);
@@ -489,7 +492,7 @@
   --popover: var(--color-surface-secondary);
   --popover-foreground: var(--color-white);
   --primary: var(
-    --color-accent
+    --color-brand-accent
   ); /* inferred — Buttons/Primary wasn't resolved on the inspected screen */
   --primary-foreground: var(--color-black);
   --secondary: var(--color-white-8);
@@ -497,23 +500,23 @@
   --muted: var(--color-surface-secondary);
   --muted-foreground: var(--color-foreground-muted);
   --accent: var(--color-white-4);
-  --accent-foreground: var(--color-accent);
-  --destructive: var(--color-destructive);
+  --accent-foreground: var(--color-brand-accent);
+  --destructive: var(--color-brand-destructive);
   --border: var(--color-white-12);
   --input: var(--color-white-12);
-  --ring: var(--color-accent);
-  --chart-1: var(--color-accent);
+  --ring: var(--color-brand-accent);
+  --chart-1: var(--color-brand-accent);
   --chart-2: var(--color-success);
   --chart-3: var(--color-warning);
-  --chart-4: var(--color-destructive);
+  --chart-4: var(--color-brand-destructive);
   --chart-5: var(--color-foreground-secondary);
   --radius: var(--radius-sm);
   --sidebar: var(--color-black);
   --sidebar-foreground: var(--color-white);
-  --sidebar-primary: var(--color-accent);
+  --sidebar-primary: var(--color-brand-accent);
   --sidebar-primary-foreground: var(--color-black);
   --sidebar-accent: var(--color-white-4);
-  --sidebar-accent-foreground: var(--color-accent);
+  --sidebar-accent-foreground: var(--color-brand-accent);
   --sidebar-border: var(--color-white-12);
-  --sidebar-ring: var(--color-accent);
+  --sidebar-ring: var(--color-brand-accent);
 }
