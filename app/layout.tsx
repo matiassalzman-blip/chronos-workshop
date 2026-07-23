@@ -9,7 +9,8 @@ import { ReactNode } from "react";
 
 export const metadata: Metadata = {
   title: "Dualboot Prototype Starter",
-  description: "A high-fidelity UI prototype starter built on Next.js, Tailwind CSS, and shadcn/ui."
+  description:
+    "A high-fidelity UI prototype starter built on Next.js, Tailwind CSS, and shadcn/ui."
 };
 
 interface RootLayoutProps {
