@@ -22,19 +22,6 @@ const RootLayout = ({ children }: RootLayoutProps) => {
       <head>
         <meta charSet="utf-8" />
         <link rel="icon" href="/assets/images/favicon.png" />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              try {
-                if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                  document.documentElement.classList.add('dark')
-                } else {
-                  document.documentElement.classList.remove('dark')
-                }
-              } catch (_) {}
-            `
-          }}
-        />
       </head>
 
       <body className="overflow-y-scroll-auto font-base relative min-h-screen w-full overflow-x-hidden scroll-smooth font-sans antialiased">

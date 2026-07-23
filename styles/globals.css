@@ -79,6 +79,39 @@
     0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.2);
 }
 
+/* design-tokens: start (generated from design.md — do not hand-edit,
+   see design-tokens-init skill) */
+@theme {
+  /* DB Design System — dark-only palette */
+  --color-black: #000000;
+  --color-surface-secondary: #1c1c1c;
+  --color-foreground-secondary: #a5a5a5;
+  --color-foreground-muted: #767676;
+  --color-button-foreground: #d7d7d7;
+  --color-accent: #53b1fd;
+  --color-success: #3ccb7f;
+  --color-warning: #fac515;
+  --color-destructive: #f63d68;
+
+  /* Alpha overlays (white/black over the near-black background) */
+  --color-white-4: rgba(255, 255, 255, 0.04);
+  --color-white-8: rgba(255, 255, 255, 0.08);
+  --color-white-12: rgba(255, 255, 255, 0.12);
+  --color-white-24: rgba(255, 255, 255, 0.24);
+  --color-black-2: rgba(0, 0, 0, 0.02);
+  --color-black-4: rgba(0, 0, 0, 0.04);
+
+  /* Typography */
+  --font-sans-db: "Geist", ui-sans-serif, system-ui, sans-serif;
+  --font-mono-db: "Geist Mono", ui-monospace, monospace;
+  --font-size-2xs: 0.625rem; /* 10px */
+
+  /* Radius */
+  --radius-xs: 0.25rem; /* 4px */
+  --radius-full: 9999px;
+}
+/* design-tokens: end */
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -448,35 +481,37 @@
 }
 
 .dark {
-  --background: var(--color-gray-950);
-  --foreground: var(--color-gray-100);
-  --card: var(--color-gray-900);
-  --card-foreground: var(--color-gray-100);
-  --popover: var(--color-gray-900);
-  --popover-foreground: var(--color-gray-100);
-  --primary: var(--color-blue-500);
-  --primary-foreground: var(--color-white);
-  --secondary: var(--color-gray-800);
-  --secondary-foreground: var(--color-gray-100);
-  --muted: var(--color-gray-800);
-  --muted-foreground: var(--color-gray-400);
-  --accent: color-mix(in oklch, var(--color-blue-900) 50%, transparent);
-  --accent-foreground: var(--color-blue-300);
-  --destructive: var(--color-red-500);
-  --border: var(--color-gray-700);
-  --input: var(--color-gray-700);
-  --ring: var(--color-blue-400);
-  --chart-1: var(--color-blue-400);
-  --chart-2: var(--color-blue-300);
-  --chart-3: var(--color-green-500);
-  --chart-4: var(--color-yellow-500);
-  --chart-5: var(--color-gray-500);
-  --sidebar: var(--color-gray-950);
-  --sidebar-foreground: var(--color-gray-100);
-  --sidebar-primary: var(--color-blue-500);
-  --sidebar-primary-foreground: var(--color-white);
-  --sidebar-accent: color-mix(in oklch, var(--color-blue-900) 50%, transparent);
-  --sidebar-accent-foreground: var(--color-blue-300);
-  --sidebar-border: var(--color-gray-800);
-  --sidebar-ring: var(--color-blue-400);
+  /* DB Design System — dark-only theme (see design.md) */
+  --background: var(--color-black);
+  --foreground: var(--color-white);
+  --card: var(--color-surface-secondary);
+  --card-foreground: var(--color-white);
+  --popover: var(--color-surface-secondary);
+  --popover-foreground: var(--color-white);
+  --primary: var(--color-accent); /* inferred — Buttons/Primary wasn't resolved on the inspected screen */
+  --primary-foreground: var(--color-black);
+  --secondary: var(--color-white-8);
+  --secondary-foreground: var(--color-button-foreground);
+  --muted: var(--color-surface-secondary);
+  --muted-foreground: var(--color-foreground-muted);
+  --accent: var(--color-white-4);
+  --accent-foreground: var(--color-accent);
+  --destructive: var(--color-destructive);
+  --border: var(--color-white-12);
+  --input: var(--color-white-12);
+  --ring: var(--color-accent);
+  --chart-1: var(--color-accent);
+  --chart-2: var(--color-success);
+  --chart-3: var(--color-warning);
+  --chart-4: var(--color-destructive);
+  --chart-5: var(--color-foreground-secondary);
+  --radius: var(--radius-sm);
+  --sidebar: var(--color-black);
+  --sidebar-foreground: var(--color-white);
+  --sidebar-primary: var(--color-accent);
+  --sidebar-primary-foreground: var(--color-black);
+  --sidebar-accent: var(--color-white-4);
+  --sidebar-accent-foreground: var(--color-accent);
+  --sidebar-border: var(--color-white-12);
+  --sidebar-ring: var(--color-accent);
 }
