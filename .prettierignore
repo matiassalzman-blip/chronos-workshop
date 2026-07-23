@@ -1,0 +1,11 @@
+node_modules
+.next
+.husky
+.history
+.swc
+.vscode
+.yarn
+.devcontainer/devcontainer.json
+cache/
+coverage/
+cache/config.json

@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/check-kb-link.sh",
+            "args": ["${CLAUDE_PROJECT_DIR}"],
+            "statusMessage": "Checking Knowledge Base link..."
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "*.{css,scss,sass,json}": [
+    "pnpm prettier"
+  ],
+  "*.{js,jsx,ts,tsx}": [
+    "pnpm prettier",
+    "pnpm eslint"
+  ]
+}

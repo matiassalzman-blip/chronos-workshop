@@ -1,0 +1,206 @@
+{
+  "name": "nextjs-v16-seed",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:0-24",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "rvest.vs-code-prettier-eslint",
+        "hb432.prettier-eslint-typescript",
+        "esbenp.prettier-vscode",
+        "bradlc.vscode-tailwindcss",
+        "ms-vscode-remote.remote-containers",
+        "ms-azuretools.vscode-docker",
+        "sleistner.vscode-fileutils",
+        "vivaxy.vscode-conventional-commits",
+        "yoavbls.pretty-ts-errors",
+        "maxvanderschee.web-accessibility",
+        "formulahendry.auto-close-tag",
+        "formulahendry.auto-complete-tag",
+        "formulahendry.auto-rename-tag",
+        "steoates.autoimport",
+        "nucllear.vscode-extension-auto-import",
+        "aaron-bond.better-comments",
+        "radium-v.better-less",
+        "naumovs.color-highlight",
+        "vunguyentuan.vscode-css-variables",
+        "mikestead.dotenv",
+        "editorconfig.editorconfig",
+        "davidanson.vscode-markdownlint",
+        "IBM.output-colorizer",
+        "usernamehw.errorlens",
+        "dsznajder.es7-react-js-snippets",
+        "htmlhint.vscode-htmlhint",
+        "visualstudioexptteam.vscodeintellicode",
+        "visualstudioexptteam.vscodeintellicode-completions",
+        "ms-vsliveshare.vsliveshare",
+        "wix.glean",
+        "avraammavridis.vsc-react-documentation",
+        "zengxingxin.sort-js-object-keys",
+        "simonsiefke.svg-preview",
+        "shardulm94.trailing-spaces",
+        "redhat.vscode-yaml",
+        "pkief.material-icon-theme",
+        "streetsidesoftware.code-spell-checker"
+      ],
+      "settings": {
+        "window.title": "${activeEditorLong}${separator}${rootName}",
+        "window.titleBarStyle": "custom",
+        "css.customData": [
+          ".vscode/tailwind.json"
+        ],
+        "workbench.tree.indent": 22,
+        "workbench.iconTheme": "material-icon-theme",
+        "breadcrumbs.enabled": false,
+        "files.eol": "\n",
+        "files.associations": {
+          "*.js": "javascript",
+          "*.jsx": "javascriptreact",
+          "*.ts": "typescript",
+          "*.tsx": "typescriptreact"
+        },
+        "files.exclude": {
+          ".cache": true,
+          ".classpath": true,
+          ".husky": false,
+          ".idea": true,
+          ".project": true,
+          ".settings": true,
+          ".next": true,
+          "coverage": false,
+          ".swc": true,
+          "**/.DS_Store": true,
+          "**/.git": true,
+          "**/node_modules/**": true,
+          "**/.pnpm-store/**": true
+        },
+        "files.watcherExclude": {
+          "**/.git/objects/**": true,
+          "**/.git/subtree-cache/**": true,
+          "**/.history/**": true,
+          "**/build/**": true,
+          "coverage": true,
+          ".swc": true,
+          "**/node_modules/**": true,
+          "**/.vscode/**": true,
+          "**/.pnpm-store/**": true,
+          ".next/**": true
+        },
+        "search.exclude": {
+          ".devcontainer": true,
+          ".husky": true,
+          ".next": true,
+          ".swc": true,
+          "**/node_modules/**": true,
+          "**/.vscode/**": true,
+          "**/.pnpm-store/**": true,
+          "coverage": true
+        },
+        "remote.extensionKind": {
+          "ms-azuretools.vscode-docker": "workspace"
+        },
+        "eslint.validate": [
+          "javascript",
+          "javascriptreact",
+          "typescript",
+          "typescriptreact"
+        ],
+        "editor.formatOnSave": true,
+        "editor.quickSuggestions": {
+          "comments": "on",
+          "other": "on",
+          "strings": "on"
+        },
+        "explorer.compactFolders": false,
+        "editor.quickSuggestionsDelay": 10,
+        "editor.smoothScrolling": true,
+        "editor.snippetSuggestions": "top",
+        "editor.suggestSelection": "first",
+        "editor.tabCompletion": "on",
+        "editor.tabSize": 2,
+        "editor.scrollBeyondLastLine": false,
+        "editor.trimAutoWhitespace": true,
+        "editor.wordWrap": "off",
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.autoClosingBrackets": "always",
+        "editor.autoClosingQuotes": "always",
+        "editor.rulers": [
+          80
+        ],
+        "editor.bracketPairColorization.enabled": true,
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": "explicit",
+          "source.fixAll": "explicit",
+          "source.organizeImports": "explicit",
+          "source.sortImports": "explicit",
+          "source.sortMembers": "explicit"
+        },
+        "[javascript]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode",
+          "editor.formatOnSave": true
+        },
+        "[javascriptreact]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode",
+          "editor.formatOnSave": true
+        },
+        "[typescript]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode",
+          "editor.formatOnSave": true
+        },
+        "[typescriptreact]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode",
+          "editor.formatOnSave": true
+        },
+        "prettier-eslint.eslintIntegration": true,
+        "auto-close-tag.activationOnLanguage": [
+          "javascript",
+          "javascriptreact",
+          "typescript",
+          "typescriptreact",
+          "plaintext"
+        ],
+        "autoimport.filesToScan": "**/*.{ts,tsx,js,jsx,css}",
+        "emmet.includeLanguages": {
+          "javascript": "javascriptreact"
+        },
+        "emmet.syntaxProfiles": {
+          "handlebars": "html",
+          "javascript": "jsx",
+          "xml": {
+            "attr_quotes": "double"
+          }
+        }
+      }
+    }
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "24.18.0",
+      "nodeGypDependencies": true
+    }
+  },
+  "windows": {
+    "note": "Windows users please remove the mount object in the following line"
+  },
+  "mounts": [
+    "type=bind,source=/Users/${localEnv:USER}/Library/pnpm/store,target=/home/vscode/.pnpm-store,consistency=cached",
+    "type=bind,source=${localEnv:HOME}/.ssh,target=/root/.ssh"
+  ],
+  "forwardPorts": [
+    3000
+  ],
+  "portsAttributes": {
+    "3000": {
+      "label": "nextjs-v16-seed",
+      "onAutoForward": "openBrowser"
+    }
+  },
+  "postCreateCommand": "echo alias ll=\\'ls -alF\\' >> /etc/bash.bashrc && echo alias gs=\\'git status\\' >> /etc/bash.bashrc && echo alias ff=\\'git diff\\' >> /etc/bash.bashrc && npm i -g prettier pnpm@10.17.1 && pnpm config set store-dir /home/vscode/.pnpm-store && pnpm install && pnpm exec next telemetry disable && pnpm run prepare && chmod ug+x .husky/* && git config --local include.path ~/.gitconfig",
+  "remoteUser": "root",
+  "runArgs": [
+    "--name",
+    "nextjs-v16-seed",
+    "--memory=5gb"
+  ]
+}

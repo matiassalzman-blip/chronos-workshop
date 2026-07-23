@@ -1,0 +1,8 @@
+echo -e "===\n>> Pre-Commit Hook: Run prettier-quick"
+# npx pretty-quick --pattern "src/**/*.*(ts|json|html|scss)" --staged
+pnpm prettier
+echo -e ">> Finish prettier-quick.\n=="
+
+echo -e "===\n>> Pre-Commit Hook: Run lint"
+pnpm lint
+echo -e ">> Finish Run lint.\n=="

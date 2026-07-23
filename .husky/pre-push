@@ -1,0 +1,2 @@
+# No enforced test/build gate here on purpose — this is a fast-iteration
+# prototype template. Vercel's own preview build is the real signal on push.

@@ -1,0 +1,73 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "lib": ["es6", "es2017", "dom", "dom.iterable", "esnext"],
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "jsx": "react-jsx",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "noEmit": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "preserveConstEnums": true,
+    "removeComments": false,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "incremental": true,
+    "rootDir": ".",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"],
+      "@/app/*": ["app/*"],
+      "@/components/*": ["components/*"],
+      "@/config/*": ["config/*"],
+      "@/context/*": ["context/*"],
+      "@/hooks/*": ["hooks/*"],
+      "@/public/*": ["public/*"],
+      "@/routes/*": ["routes/*"],
+      "@/styles/*": ["styles/*"],
+      "@/types/*": ["types/*"],
+      "@/utils/*": ["utils/*"],
+      "@/images/*": ["public/assets/images/*"],
+      "@/lib/*": ["lib/*"]
+    },
+    "types": [
+      "@testing-library/jest-dom",
+      "jest",
+      "node",
+      "@testing-library/user-event"
+    ],
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "jest-setup.ts",
+    "next.config.mjs",
+    "public",
+    "app/components/**/*",
+    "app/**/*",
+    ".next/types/**/*.ts",
+    "tailwind.config.mjs",
+    "components/Header",
+    "components/shared",
+    "components/Sidebar",
+    "lib",
+    ".next/dev/types/**/*.ts"
+  ],
+  "exclude": ["node_modules", "build", ".next"]
+}
