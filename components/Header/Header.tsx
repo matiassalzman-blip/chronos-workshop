@@ -1,40 +1,31 @@
 "use client";
+
 import { Link } from "@/components/shared";
+import { useChronosSession } from "@/hooks/useChronosSession";
 import appRoutes from "@/routes/appRoutes";
-import Image from "next/image";
 
 const Header = () => {
+  const { currentUser } = useChronosSession();
+
   return (
-    <header className="border-b border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
-      <div className="flex items-center justify-between px-6 py-4">
-        {/* Logo Section */}
-        <Link
-          href={appRoutes.rootPath()}
-          className="flex items-center space-x-3"
-        >
-          <div className="relative h-8 w-auto">
-            <Image
-              src="/assets/images/logo.png"
-              alt="Dualboot Partners Logo"
-              width={197}
-              height={56}
-              className="h-full w-auto object-contain"
-              priority
-            />
-          </div>
+    <header className="border-b border-border bg-background">
+      <div className="flex items-center justify-between px-6 py-3">
+        <Link href={appRoutes.rootPath()} className="flex items-center">
+          <span className="font-heading text-base font-semibold text-foreground">
+            Chronos
+          </span>
         </Link>
 
-        {/* Right Section */}
-        <div className="flex items-center space-x-4">
-          {/* User Avatar/Profile area (placeholder) */}
-          <div className="flex items-center space-x-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700">
-              <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
-                SC
-              </span>
-            </div>
+        {currentUser && (
+          <div className="flex items-center gap-2">
+            <span className="flex size-8 items-center justify-center rounded-full bg-muted text-xs font-medium text-muted-foreground">
+              {currentUser.initials}
+            </span>
+            <span className="text-sm font-medium text-foreground">
+              {currentUser.name}
+            </span>
           </div>
-        </div>
+        )}
       </div>
     </header>
   );
