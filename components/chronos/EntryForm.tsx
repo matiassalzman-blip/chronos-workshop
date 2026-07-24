@@ -22,7 +22,7 @@ import { clients, projects } from "@/lib/chronos/fixtures";
 import { Entry } from "@/lib/chronos/types";
 import { EntryInput } from "@/hooks/useEntries";
 
-const MAX_HOURS = 24;
+const MAX_HOURS = 12;
 const HOURS_STEP = 0.25;
 
 interface FormState {
@@ -101,7 +101,7 @@ export function EntryForm({ entry, onSubmit, onCancel }: EntryFormProps) {
     } else if (Math.round(hours / HOURS_STEP) !== hours / HOURS_STEP) {
       nextErrors.hours = "Hours must be in 0.25 increments.";
     } else if (hours > MAX_HOURS) {
-      nextErrors.hours = `Hours can't exceed ${MAX_HOURS} for a single entry.`;
+      nextErrors.hours = `Hours per entry must be ${HOURS_STEP} to ${MAX_HOURS}.`;
     }
 
     if (form.description.trim().length < 3) {
