@@ -6,6 +6,11 @@ import appRoutes from "@/routes/appRoutes";
 
 const Header = () => {
   const { currentUser } = useChronosSession();
+  const today = new Date().toLocaleDateString("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric"
+  });
 
   return (
     <header className="border-b border-border bg-background">
@@ -23,6 +28,12 @@ const Header = () => {
             </span>
             <span className="text-sm font-medium text-foreground">
               {currentUser.name}
+            </span>
+            <span
+              className="text-xs text-muted-foreground"
+              suppressHydrationWarning
+            >
+              {today}
             </span>
           </div>
         )}
