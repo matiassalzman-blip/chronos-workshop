@@ -38,7 +38,10 @@ export default function LoginPage() {
       <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle>Chronos</CardTitle>
-          <CardDescription>Who&apos;s logging time today?</CardDescription>
+          <CardDescription>
+            More than a dashboard. An all-in-one reporting tool, exclusive for
+            DB employees.
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col gap-2">
