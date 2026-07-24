@@ -1,11 +1,20 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 import { Link } from "@/components/shared";
+import { Button } from "@/components/ui/button";
 import { useChronosSession } from "@/hooks/useChronosSession";
 import appRoutes from "@/routes/appRoutes";
 
 const Header = () => {
-  const { currentUser } = useChronosSession();
+  const router = useRouter();
+  const { currentUser, logout } = useChronosSession();
+
+  const handleLogout = () => {
+    logout();
+    router.push("/login");
+  };
 
   return (
     <header className="border-b border-border bg-background">
@@ -24,6 +33,9 @@ const Header = () => {
             <span className="text-sm font-medium text-foreground">
               {currentUser.name}
             </span>
+            <Button variant="link" size="sm" onClick={handleLogout}>
+              Log out
+            </Button>
           </div>
         )}
       </div>
