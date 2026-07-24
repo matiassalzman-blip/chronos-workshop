@@ -23,6 +23,13 @@ import {
   DialogTitle
 } from "@/components/ui/dialog";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from "@/components/ui/select";
+import {
   Table,
   TableBody,
   TableCell,
@@ -37,11 +44,31 @@ import { getWeekRange, isWithinRange } from "@/lib/chronos/date";
 import { clients, projects } from "@/lib/chronos/fixtures";
 import { Entry } from "@/lib/chronos/types";
 
+type SortOrder = "newest" | "oldest" | "most-hours" | "fewest-hours";
+
 function projectLabel(projectId: string): string {
   const project = projects.find((p) => p.id === projectId);
   if (!project) return "Unknown project";
   if (project.clientId === null) return project.name;
   return `${clients.find((client) => client.id === project.clientId)?.name} — ${project.name}`;
+}
+
+function compareByDate(a: Entry, b: Entry): number {
+  return a.date < b.date ? 1 : a.date > b.date ? -1 : 0;
+}
+
+function sortEntries(entries: Entry[], sortOrder: SortOrder): Entry[] {
+  const sorted = [...entries];
+  switch (sortOrder) {
+    case "oldest":
+      return sorted.sort((a, b) => -compareByDate(a, b));
+    case "most-hours":
+      return sorted.sort((a, b) => b.hours - a.hours || compareByDate(a, b));
+    case "fewest-hours":
+      return sorted.sort((a, b) => a.hours - b.hours || compareByDate(a, b));
+    default:
+      return sorted.sort(compareByDate);
+  }
 }
 
 export default function EntriesPage() {
@@ -51,6 +78,7 @@ export default function EntriesPage() {
     currentUser?.id ?? null
   );
 
+  const [sortOrder, setSortOrder] = useState<SortOrder>("newest");
   const [formOpen, setFormOpen] = useState(false);
   const [editingEntry, setEditingEntry] = useState<Entry | undefined>(
     undefined
@@ -67,6 +95,7 @@ export default function EntriesPage() {
   const weekTotal = entries
     .filter((entry) => isWithinRange(entry.date, weekRange))
     .reduce((sum, entry) => sum + entry.hours, 0);
+  const sortedEntries = sortEntries(entries, sortOrder);
 
   const openAddForm = () => {
     setEditingEntry(undefined);
@@ -109,6 +138,23 @@ export default function EntriesPage() {
         </Button>
       </div>
 
+      <div className="flex items-center gap-3">
+        <Select
+          value={sortOrder}
+          onValueChange={(value) => setSortOrder(value as SortOrder)}
+        >
+          <SelectTrigger className="w-48">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="newest">Newest first</SelectItem>
+            <SelectItem value="oldest">Oldest first</SelectItem>
+            <SelectItem value="most-hours">Most hours first</SelectItem>
+            <SelectItem value="fewest-hours">Fewest hours first</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
       {entries.length === 0 ? (
         <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-border py-16 text-center">
           <p className="text-sm text-muted-foreground">
@@ -133,7 +179,7 @@ export default function EntriesPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {entries.map((entry) => (
+            {sortedEntries.map((entry) => (
               <TableRow key={entry.id}>
                 <TableCell>{entry.date}</TableCell>
                 <TableCell>{projectLabel(entry.projectId)}</TableCell>
