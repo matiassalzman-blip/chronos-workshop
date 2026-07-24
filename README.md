@@ -1,5 +1,7 @@
 # Dualboot Prototype Starter
 
+**Live preview:** [chronos-workshop-eight.vercel.app](https://chronos-workshop-eight.vercel.app/)
+
 This is a starting point for building a **high-fidelity, throwaway-toward-production UI prototype** — not a production app. It's meant for designers to build directly in code (typically by driving Claude Code), with occasional refinement in Figma, and to hand off a deployed preview link to the client and this repo to a development team who will extend it toward production.
 
 See `CLAUDE.md` for the working rules this template assumes (no backend, reuse tokens/components, keep it extendable but not over-engineered).
