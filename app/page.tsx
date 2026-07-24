@@ -23,6 +23,15 @@ import {
   DialogTitle
 } from "@/components/ui/dialog";
 import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue
+} from "@/components/ui/select";
+import {
   Table,
   TableBody,
   TableCell,
@@ -56,6 +65,7 @@ export default function EntriesPage() {
     undefined
   );
   const [deletingEntry, setDeletingEntry] = useState<Entry | null>(null);
+  const [projectFilter, setProjectFilter] = useState("all");
 
   useEffect(() => {
     if (!currentUser) router.replace("/login");
@@ -67,6 +77,11 @@ export default function EntriesPage() {
   const weekTotal = entries
     .filter((entry) => isWithinRange(entry.date, weekRange))
     .reduce((sum, entry) => sum + entry.hours, 0);
+
+  const visibleEntries =
+    projectFilter === "all"
+      ? entries
+      : entries.filter((entry) => entry.projectId === projectFilter);
 
   const openAddForm = () => {
     setEditingEntry(undefined);
@@ -109,6 +124,37 @@ export default function EntriesPage() {
         </Button>
       </div>
 
+      <div className="flex items-center gap-3">
+        <Select value={projectFilter} onValueChange={setProjectFilter}>
+          <SelectTrigger className="w-56">
+            <SelectValue placeholder="All projects" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All projects</SelectItem>
+            <SelectGroup>
+              <SelectLabel>Client projects</SelectLabel>
+              {projects
+                .filter((project) => project.clientId !== null)
+                .map((project) => (
+                  <SelectItem key={project.id} value={project.id}>
+                    {projectLabel(project.id)}
+                  </SelectItem>
+                ))}
+            </SelectGroup>
+            <SelectGroup>
+              <SelectLabel>Internal</SelectLabel>
+              {projects
+                .filter((project) => project.clientId === null)
+                .map((project) => (
+                  <SelectItem key={project.id} value={project.id}>
+                    {projectLabel(project.id)}
+                  </SelectItem>
+                ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </div>
+
       {entries.length === 0 ? (
         <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-border py-16 text-center">
           <p className="text-sm text-muted-foreground">
@@ -133,7 +179,7 @@ export default function EntriesPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {entries.map((entry) => (
+            {visibleEntries.map((entry) => (
               <TableRow key={entry.id}>
                 <TableCell>{entry.date}</TableCell>
                 <TableCell>{projectLabel(entry.projectId)}</TableCell>
