@@ -16,6 +16,7 @@ import {
   SelectValue
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
+import { TagsInput } from "@/components/ui/tags-input";
 import { Textarea } from "@/components/ui/textarea";
 import { toISODate } from "@/lib/chronos/date";
 import { clients, projects } from "@/lib/chronos/fixtures";
@@ -32,7 +33,7 @@ interface FormState {
   description: string;
   billable: boolean;
   billableTouched: boolean;
-  tags: string;
+  tags: string[];
 }
 
 function toFormState(entry?: Entry): FormState {
@@ -44,7 +45,7 @@ function toFormState(entry?: Entry): FormState {
       description: "",
       billable: false,
       billableTouched: false,
-      tags: ""
+      tags: []
     };
   }
 
@@ -55,7 +56,7 @@ function toFormState(entry?: Entry): FormState {
     description: entry.description,
     billable: entry.billable,
     billableTouched: true,
-    tags: entry.tags.join(", ")
+    tags: entry.tags
   };
 }
 
@@ -123,9 +124,6 @@ export function EntryForm({ entry, onSubmit, onCancel }: EntryFormProps) {
       description: form.description.trim(),
       billable: form.billable,
       tags: form.tags
-        .split(",")
-        .map((tag) => tag.trim())
-        .filter(Boolean)
     });
   };
 
@@ -228,12 +226,10 @@ export function EntryForm({ entry, onSubmit, onCancel }: EntryFormProps) {
 
       <div className="flex flex-col gap-1.5">
         <Label htmlFor="entry-tags">Tags</Label>
-        <Input
+        <TagsInput
           id="entry-tags"
           value={form.tags}
-          onChange={(e) =>
-            setForm((prev) => ({ ...prev, tags: e.target.value }))
-          }
+          onChange={(tags) => setForm((prev) => ({ ...prev, tags }))}
           placeholder="design, client-call"
         />
       </div>
