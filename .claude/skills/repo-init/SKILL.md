@@ -120,7 +120,30 @@ per collaborator), so there's no personal file for it.
      user and stop. (Note: this only proves *this machine* ran `vercel link`; it
      doesn't prove the GitHub repo itself is connected for auto-deploy on merge —
      if the user isn't sure, walk them through step 8's dashboard check anyway.)
-   - Absent → continue to step 8.
+   - Absent → **check the GitHub repo itself before assuming it's unconnected**,
+     since the connection lives on the repo, not on any one contributor's local
+     machine or Vercel account — whoever connected it first is enough. Merges to
+     `main` from anyone with push access deploy to that same project automatically;
+     there's no "one Vercel link per contributor" model.
+     ```bash
+     gh api repos/<owner>/<repo>/deployments --jq '.[0].environment, .[0].creator.login'
+     ```
+     This only needs read access (no admin/webhook permissions required). If it
+     returns a deployment created by `vercel[bot]`, the repo is already connected
+     — regardless of whose Vercel account owns it.
+     - Already connected → **do not run `vercel link` or `vercel git connect`** on
+       this machine. Two different Vercel projects can't both connect to the same
+       repo/branch — attempting it creates orphaned, empty duplicate projects
+       (wasted, and confusing to clean up later). Look up the production URL (e.g.
+       `gh api repos/<owner>/<repo>/deployments --jq '.[0].id'` then
+       `gh api repos/<owner>/<repo>/deployments/<id>/statuses --jq '.[0].target_url'`,
+       or just ask the user for the link they already use) and confirm it to the
+       user, then stop. If the user wants dashboard access (logs, env vars), that
+       requires being added as a member of whichever Vercel team/account owns it —
+       separate from this setup and possibly gated by that account's plan (Hobby
+       plans don't support team members).
+     - No deployments found (empty result, or `gh` command fails because the repo
+       has no `deployments` at all) → genuinely first time, continue to step 8.
 
 8. **Connect the repo** — this creates a real, externally-visible Vercel project;
    confirm with the user before running these (a `vercel login` prompt will open a

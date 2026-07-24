@@ -1,16 +1,25 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 import { Link } from "@/components/shared";
+import { Button } from "@/components/ui/button";
 import { useChronosSession } from "@/hooks/useChronosSession";
 import appRoutes from "@/routes/appRoutes";
 
 const Header = () => {
-  const { currentUser } = useChronosSession();
+  const router = useRouter();
+  const { currentUser, logout } = useChronosSession();
   const today = new Date().toLocaleDateString("en-US", {
     weekday: "short",
     month: "short",
     day: "numeric"
   });
+
+  const handleLogout = () => {
+    logout();
+    router.push("/login");
+  };
 
   return (
     <header className="border-b border-border bg-background">
@@ -35,6 +44,9 @@ const Header = () => {
             >
               {today}
             </span>
+            <Button variant="link" size="sm" onClick={handleLogout}>
+              Log out
+            </Button>
           </div>
         )}
       </div>
