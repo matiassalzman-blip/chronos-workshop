@@ -33,7 +33,7 @@ import {
 import { EntryForm } from "@/components/chronos/EntryForm";
 import { useChronosSession } from "@/hooks/useChronosSession";
 import { EntryInput, useEntries } from "@/hooks/useEntries";
-import { getWeekRange, isWithinRange } from "@/lib/chronos/date";
+import { getMonthRange, getWeekRange, isWithinRange } from "@/lib/chronos/date";
 import { clients, projects } from "@/lib/chronos/fixtures";
 import { Entry } from "@/lib/chronos/types";
 
@@ -68,6 +68,11 @@ export default function EntriesPage() {
     .filter((entry) => isWithinRange(entry.date, weekRange))
     .reduce((sum, entry) => sum + entry.hours, 0);
 
+  const monthRange = getMonthRange(new Date());
+  const monthTotal = entries
+    .filter((entry) => isWithinRange(entry.date, monthRange))
+    .reduce((sum, entry) => sum + entry.hours, 0);
+
   const openAddForm = () => {
     setEditingEntry(undefined);
     setFormOpen(true);
@@ -100,6 +105,11 @@ export default function EntriesPage() {
           <p className="text-sm text-muted-foreground">
             This week:{" "}
             <span className="font-medium text-foreground">{weekTotal}</span>{" "}
+            hours logged
+          </p>
+          <p className="text-sm text-muted-foreground">
+            This month:{" "}
+            <span className="font-medium text-foreground">{monthTotal}</span>{" "}
             hours logged
           </p>
         </div>
