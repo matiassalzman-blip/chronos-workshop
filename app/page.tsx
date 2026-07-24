@@ -112,7 +112,8 @@ export default function EntriesPage() {
       {entries.length === 0 ? (
         <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-border py-16 text-center">
           <p className="text-sm text-muted-foreground">
-            No entries yet — log your first hours to get started.
+            No entries yet. Add a row, fill it in, and you&apos;re done — should
+            take about 10 seconds.
           </p>
           <Button onClick={openAddForm}>
             <PlusIcon />
