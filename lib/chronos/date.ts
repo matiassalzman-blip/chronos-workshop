@@ -19,6 +19,14 @@ export function getWeekRange(date: Date): { start: string; end: string } {
   return { start: toISODate(start), end: toISODate(end) };
 }
 
+/** Calendar month range (inclusive) containing `date`. */
+export function getMonthRange(date: Date): { start: string; end: string } {
+  const start = new Date(date.getFullYear(), date.getMonth(), 1);
+  const end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
+  return { start: toISODate(start), end: toISODate(end) };
+}
+
 export function isWithinRange(
   dateISO: string,
   range: { start: string; end: string }
